@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// WORDSデータは省略せずに保持してね
+// WORDSデータ（31番まで）
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
-  // ... (id: 1 〜 31 までのデータ)
+  { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
+  // ... (以下、31番まで保持してね)
 ];
 
 export default function Home() {
@@ -88,7 +89,6 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* 💡 解説オーバーレイ（ここがゆうきくんの言っていた仕様よ！） */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div
@@ -99,22 +99,16 @@ export default function Home() {
                     className="absolute inset-0 z-50 bg-black/70 flex flex-col items-center justify-center p-8 backdrop-blur-sm"
                   >
                     <div className="text-center text-white">
-                      <h3 className="text-xl font-bold mb-6 leading-relaxed">
-                        {WORDS[index].noteEn}
-                      </h3>
-                      <p className="text-sm leading-loose opacity-90">
-                        {WORDS[index].noteJp}
-                      </p>
-                      <p className="mt-12 text-[10px] opacity-50 tracking-widest uppercase">
-                        Tap to close
-                      </p>
+                      <h3 className="text-xl font-bold mb-6 leading-relaxed">{WORDS[index].noteEn}</h3>
+                      <p className="text-sm leading-loose opacity-90">{WORDS[index].noteJp}</p>
+                      <p className="mt-12 text-[10px] opacity-50 tracking-widest uppercase font-bold">Tap to close</p>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <div className="w-full max-w-[280px] py-4 h-20 flex flex-col items-center justify-center">
+            <div className="w-full max-w-[280px] py-4 h-32 flex flex-col items-center justify-start">
               {!user ? (
                 <button
                   onClick={handleLogin}
@@ -124,11 +118,21 @@ export default function Home() {
                   {isPiReady ? "Piでログインして始める" : "読み込み中..."}
                 </button>
               ) : (
-                index === 0 && (
-                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700">
-                    ようこそ、{user.username} くん！
-                  </motion.p>
-                )
+                <div className="flex flex-col items-center space-y-4">
+                  {index === 0 && (
+                    <>
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2">
+                        ようこそ、{user.username} くん！
+                      </motion.p>
+                      <button
+                        onClick={nextCard}
+                        className="px-8 py-2 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
+                      >
+                        開く
+                      </button>
+                    </>
+                  )}
+                </div>
               )}
             </div>
 
