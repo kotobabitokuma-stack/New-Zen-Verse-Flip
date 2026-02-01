@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- WORDSデータ（31番まで一文字も省略せずに入れているわよ！） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
@@ -88,7 +87,7 @@ export default function Home() {
             <img src="/Loading.png" alt="Loading" className="w-full max-w-[280px]" />
           </motion.div>
         ) : (
-          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white h-full">
+          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white h-full relative">
             
             <div className="flex-1 w-full max-w-sm flex items-center justify-center px-6 relative overflow-hidden">
               <AnimatePresence initial={false}>
@@ -102,12 +101,12 @@ export default function Home() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ type: "spring", stiffness: 260, damping: 26 }}
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute"
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute pt-12"
                 >
                   {index === 0 ? (
                     <img 
                       src={WORDS[0].image} 
-                      className="w-full h-auto max-h-[70vh] object-contain pointer-events-none" 
+                      className="w-full h-auto max-h-[60vh] object-contain pointer-events-none" 
                       alt="Cover" 
                     />
                   ) : (
@@ -170,17 +169,18 @@ export default function Home() {
               )}
             </div>
 
-            {/* 💡 広告スペースの復元 */}
-            <div className="w-full h-20 flex items-center justify-center bg-gray-50 border-t border-gray-100 shrink-0">
-              <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
-            </div>
-
-            <footer className="w-full text-center py-4 shrink-0 bg-white">
-              <div className="pt-2 border-t border-gray-100 mx-10">
+            {/* 💡 kotobabito フッターを上に移動 */}
+            <footer className="w-full text-center py-4 shrink-0 bg-white border-t border-gray-100">
+              <div className="mx-10">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
                 <p className="text-[10px] text-gray-500 italic mt-0.5">Zen Verse Flip (Minimal)</p>
               </div>
             </footer>
+
+            {/* 💡 広告スペースを最下部に移動 */}
+            <div className="w-full h-16 flex items-center justify-center bg-gray-50 shrink-0">
+              <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
+            </div>
 
           </motion.main>
         )}
