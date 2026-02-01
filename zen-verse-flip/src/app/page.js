@@ -88,8 +88,7 @@ export default function Home() {
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full bg-white relative overflow-hidden">
             
-            {/* 1. 言葉・画像エリア (上部) */}
-            <div className="flex-1 flex flex-col items-center justify-center px-6 relative pt-12">
+            <div className="flex-1 flex flex-col items-center justify-center px-6 relative pt-4">
               <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                   key={index}
@@ -102,13 +101,14 @@ export default function Home() {
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => { if (user && index !== 0) setShowNote(true); }}
-                  className="w-full flex flex-col items-center justify-center cursor-pointer absolute"
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute"
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[60vh] object-contain pointer-events-none" alt="Cover" />
+                    /* 💡 表紙サイズを 80vh に設定したわ */
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
-                    <div className="text-center w-full pt-4">
+                    <div className="text-center w-full">
                       <h2 className="text-4xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
                       <p className="text-lg text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Tap for Note</motion.p>
@@ -118,10 +118,9 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 2. 操作・ナビエリア (下部) - ここを物理的に分離 */}
             <div className="shrink-0 flex flex-col items-center bg-white z-20">
               {!user ? (
-                <div className="w-full max-w-[280px] pb-20 pt-10 text-center">
+                <div className="w-full max-w-[280px] pb-24 pt-10 text-center">
                   <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
                     {isPiReady ? "Pi Network Login" : "Loading..."}
                   </button>
@@ -135,7 +134,8 @@ export default function Home() {
                     </>
                   ) : (
                     <>
-                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-12">Day {index}</span>
+                      {/* 💡 DAY表示を mb-24 でしっかり下げたわ */}
+                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-24">Day {index}</span>
                       <div className="flex items-center justify-between w-full px-4 mb-2">
                         <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16">&lt;</button>
                         <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase tracking-widest">Top</button>
@@ -146,7 +146,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* フッター・広告 */}
               <footer className="w-full text-center py-4 border-t border-gray-100">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
               </footer>
@@ -155,14 +154,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Noteオーバーレイ */}
             <AnimatePresence>
               {showNote && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="fixed inset-0 z-[150] bg-black/50 flex items-center justify-center p-8 backdrop-blur-sm">
                   <div className="text-center text-white max-w-sm">
                     <h3 className="text-2xl font-bold mb-8">{WORDS[index].noteEn}</h3>
                     <p className="text-base opacity-95">{WORDS[index].noteJp}</p>
-                    <p className="mt-14 text-xs opacity-60 uppercase font-bold tracking-widest italic text-white/50">Tap to close</p>
+                    <p className="mt-14 text-xs opacity-60 uppercase font-bold tracking-widest italic">Tap to close</p>
                   </div>
                 </motion.div>
               )}
