@@ -143,7 +143,6 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* ナビゲーション & ログインエリア */}
             <div className="w-full max-w-[280px] h-32 flex flex-col items-center justify-center shrink-0">
               {!user ? (
                 <button
@@ -168,21 +167,20 @@ export default function Home() {
                   </>
                 ) : (
                   <div className="flex items-center justify-between w-full px-4">
-                    <button onClick={prevCard} className="text-3xl text-gray-400 hover:text-black p-2">
+                    <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-2 transition-colors">
                       &lt;
                     </button>
                     
-                    {/* 💡 Day表示とTopボタンの組み合わせ */}
                     <div className="flex flex-col items-center">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">
                         Day {index}
                       </span>
-                      <button onClick={goToTop} className="text-[10px] font-bold text-gray-500 hover:text-black tracking-widest border border-gray-200 px-4 py-1 rounded-full uppercase">
+                      <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-5 py-1.5 rounded-full uppercase transition-all">
                         Top
                       </button>
                     </div>
 
-                    <button onClick={nextCard} className="text-3xl text-gray-400 hover:text-black p-2">
+                    <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-2 transition-colors">
                       &gt;
                     </button>
                   </div>
@@ -190,7 +188,6 @@ export default function Home() {
               )}
             </div>
 
-            {/* フッター */}
             <footer className="w-full text-center py-4 shrink-0 bg-white border-t border-gray-100">
               <div className="mx-10">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
@@ -198,7 +195,6 @@ export default function Home() {
               </div>
             </footer>
 
-            {/* 広告スペース */}
             <div className="w-full h-16 flex items-center justify-center bg-gray-50 shrink-0">
               <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
             </div>
