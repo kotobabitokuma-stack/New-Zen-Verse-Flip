@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// --- WORDSデータ（31日分すべて保持） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
@@ -28,7 +29,7 @@ const WORDS = [
   { id: 21, mainEn: "It's okay, the sun is always watching over you!", subJp: "大丈夫いつだってお天道さんが見ているよ", noteEn: "The sun is always watching. You know your own effort.", noteJp: "あなた自身が自分の努力を知っている、それだけで十分なのです。" },
   { id: 22, mainEn: "We are all connected!", subJp: "ボクらはつながっているよ", noteEn: "Whether it is sunny or rainy, the same sky connects us all.", noteJp: "孤独を感じた時は、空を見上げてみてください。" },
   { id: 23, mainEn: "There's someone tracing your footsteps", subJp: "君の足あとを辿る人がいる", noteEn: "Your footprints will become a guide for those who follow.", noteJp: "あなたの一歩一歩が重なり、やがて誰かの道しるべになる。" },
-  { id: 24, mainEn: "If you look back, even headwinds become tailwinds", subJp: "風", noteEn: "By shifting your mindset, resistance becomes energy.", noteJp: "考え方ひとつで、困難はあなたを前へ運ぶ追い風に変わります。" },
+  { id: 24, mainEn: "If you can't look back, even headwinds become tailwinds", subJp: "風", noteEn: "By shifting your mindset, resistance becomes energy.", noteJp: "考え方ひとつで、困難はあなたを前へ運ぶ追い風に変わります。" },
   { id: 25, mainEn: "Letter to the Future", subJp: "未来への手紙", noteEn: "You have the freedom to draw whatever makes you smile.", noteJp: "未来はいつだって、あなた次第で描き変えられます。" },
   { id: 26, mainEn: "I am grateful to have met you from the bottom of my heart", subJp: "あなたに出逢えて良かった", noteEn: "Meeting special people is an attraction.", noteJp: "自分らしく生きていれば、運命の出逢いにきっと気づけるはずです。" },
   { id: 27, mainEn: "Too ◯◯ is your charm", subJp: "◯◯過ぎなところ", noteEn: "Your \"too much\" qualities are actually your greatest strengths.", noteJp: "「〇〇過ぎ」なところは、抑えられないほど溢れるあなたの才能です。" },
@@ -101,16 +102,16 @@ export default function Home() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ type: "spring", stiffness: 260, damping: 26 }}
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute pt-12"
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute pt-16"
                 >
                   {index === 0 ? (
                     <img 
                       src={WORDS[0].image} 
-                      className="w-full h-auto max-h-[60vh] object-contain pointer-events-none" 
+                      className="w-full h-auto max-h-[85vh] object-contain pointer-events-none" 
                       alt="Cover" 
                     />
                   ) : (
-                    <div className="text-center">
+                    <div className="text-center pt-8">
                       <h2 className="text-3xl font-bold mb-8 px-2 leading-tight text-black">
                         {WORDS[index].mainEn}
                       </h2>
@@ -169,7 +170,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* 💡 kotobabito フッターを上に移動 */}
+            {/* フッター */}
             <footer className="w-full text-center py-4 shrink-0 bg-white border-t border-gray-100">
               <div className="mx-10">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
@@ -177,7 +178,7 @@ export default function Home() {
               </div>
             </footer>
 
-            {/* 💡 広告スペースを最下部に移動 */}
+            {/* 広告スペース */}
             <div className="w-full h-16 flex items-center justify-center bg-gray-50 shrink-0">
               <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
             </div>
