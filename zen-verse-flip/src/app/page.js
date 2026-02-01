@@ -56,10 +56,18 @@ const handlePayment = async () => {
         memo: "KBKテスト決済",
         metadata: { productId: "test_001" },
       }, {
-        // サーバーに承認を依頼する（今は自動でログを出す設定）
-        onReadyForServerApproval: (paymentId) => {
-          console.log("サーバー承認待ち:", paymentId);
-          // 本番はここで自前のサーバーを呼び出すわ
+   // 💰 修正：ただログを出すだけでなく、サーバーの承認窓口を呼び出すわ！
+        onReadyForServerApproval: async (paymentId) => {
+          console.log("サーバー承認リクエスト送信中...", paymentId);
+          try {
+            await fetch("/api/payment/approve", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ paymentId }),
+            });
+          } catch (error) {
+            console.error("承認リクエスト失敗:", error);
+          }
         },
         // 💰 ここが重要！決済が完了したら自前APIに報告する
         onReadyForServerCompletion: async (paymentId, txid) => {
