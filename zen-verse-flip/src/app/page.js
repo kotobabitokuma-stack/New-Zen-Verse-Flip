@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- WORDSデータ（31日分すべて保持） ---
+// --- WORDSデータ（31日分） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
@@ -120,7 +120,6 @@ export default function Home() {
                         {WORDS[index].subJp}
                       </p>
                       
-                      {/* 💡 Tap for Note をさらに下に、色を濃く配置 */}
                       <div className="absolute bottom-10 left-0 right-0">
                         <motion.p 
                           animate={{ opacity: [0.5, 1, 0.5] }}
@@ -154,7 +153,7 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            <div className="w-full max-w-[280px] h-32 flex flex-col items-center justify-center shrink-0">
+            <div className="w-full max-w-[280px] h-32 flex flex-col items-center justify-center shrink-0 pb-4">
               {!user ? (
                 <button
                   onClick={handleLogin}
@@ -177,13 +176,14 @@ export default function Home() {
                     </button>
                   </>
                 ) : (
-                  <div className="flex items-center justify-between w-full px-4">
+                  /* 💡 ナビゲーションの高さ調整 */
+                  <div className="flex items-center justify-between w-full px-4 relative">
                     <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-2 transition-colors">
                       &lt;
                     </button>
                     
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">
+                    <div className="flex flex-col items-center -mt-2"> {/* 💡 少し位置を上げた */}
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-1.5">
                         Day {index}
                       </span>
                       <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-5 py-1.5 rounded-full uppercase transition-all">
