@@ -53,13 +53,13 @@ export default function Home() {
   };
 
   const handleDragEnd = (event, info) => {
-    if (info.offset.x < -30) nextCard(); // 感度を少し上げました
+    if (info.offset.x < -30) nextCard();
     else if (info.offset.x > 30) prevCard();
   };
 
   return (
     <div className="fixed inset-0 bg-white overflow-hidden text-black font-sans flex flex-col">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isLoading ? (
           <motion.div key="loader" className="flex h-screen flex-col items-center justify-center bg-white" exit={{ opacity: 0 }}>
             <img src="/Loading.png" alt="Loading" className="w-full max-w-[280px]" />
@@ -68,28 +68,27 @@ export default function Home() {
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white">
             
             <div className="flex-1 w-full max-w-sm flex items-center justify-center px-6 relative overflow-hidden">
-              {/* modeをpopLayoutに変更してスワイプの追従性を向上 */}
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence initial={false}>
                 <motion.div
                   key={index}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => user && index !== 0 && setShowNote(true)}
-                  initial={{ opacity: 0, x: 50 }}
+                  initial={{ opacity: 0, x: 100 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer"
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 26 }}
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute"
                 >
                   {index === 0 ? (
-                    <img src={WORDS[0].image} className="w-full h-auto" alt="Cover" />
+                    <img src={WORDS[0].image} className="w-full h-auto pointer-events-none" alt="Cover" />
                   ) : (
                     <div className="text-center">
-                      <h2 className="text-2xl font-bold mb-6 px-4 leading-snug text-black">
+                      <h2 className="text-3xl font-bold mb-8 px-2 leading-tight text-black">
                         {WORDS[index].mainEn}
                       </h2>
-                      <p className="text-sm text-gray-500 px-6">
+                      <p className="text-base text-gray-500 px-4">
                         {WORDS[index].subJp}
                       </p>
                     </div>
@@ -107,10 +106,10 @@ export default function Home() {
                     onClick={() => setShowNote(false)}
                     className="absolute inset-0 z-50 bg-black/50 flex flex-col items-center justify-center p-8 backdrop-blur-[2px]"
                   >
-                    <motion.div initial={{ y: 10 }} animate={{ y: 0 }} className="text-center text-white">
-                      <h3 className="text-xl font-bold mb-6 leading-relaxed">{WORDS[index].noteEn}</h3>
-                      <p className="text-sm leading-loose opacity-90">{WORDS[index].noteJp}</p>
-                      <p className="mt-12 text-[10px] opacity-60 tracking-widest uppercase font-bold text-white">Tap to close</p>
+                    <motion.div initial={{ y: 20 }} animate={{ y: 0 }} className="text-center text-white">
+                      <h3 className="text-2xl font-bold mb-8 leading-tight">{WORDS[index].noteEn}</h3>
+                      <p className="text-base leading-relaxed opacity-95">{WORDS[index].noteJp}</p>
+                      <p className="mt-14 text-xs opacity-60 tracking-widest uppercase font-bold text-white">Tap to close</p>
                     </motion.div>
                   </motion.div>
                 )}
@@ -135,7 +134,7 @@ export default function Home() {
                       </motion.p>
                       <button
                         onClick={nextCard}
-                        className="px-12 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
+                        className="px-14 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
                       >
                         OPEN
                       </button>
