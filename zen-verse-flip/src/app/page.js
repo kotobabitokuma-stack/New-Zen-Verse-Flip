@@ -73,7 +73,6 @@ export default function Home() {
     else if (info.offset.x > 30) prevCard();
   };
 
-  // アニメーション設定
   const variants = {
     enter: (d) => ({ x: d > 0 ? 300 : -300, opacity: 0 }),
     center: { x: 0, opacity: 1 },
@@ -133,10 +132,11 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* ナビゲーション */}
-            <div className="w-full max-w-[340px] h-40 flex flex-col items-center justify-start shrink-0">
+            {/* ナビゲーションエリア */}
+            <div className="w-full max-w-[340px] h-44 flex flex-col items-center justify-start shrink-0">
               {!user ? (
-                <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg mt-4">
+                /* 💡 ログインボタンをさらに下に配置 */
+                <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg mt-10">
                   {isPiReady ? "Pi Network Login" : "Loading..."}
                 </button>
               ) : (
@@ -147,8 +147,8 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="w-full flex flex-col items-center">
-                    {/* DAY表示 */}
-                    <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-4">
+                    {/* 💡 DAY表示を少し下げてボタンに近づける */}
+                    <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mt-4 mb-2">
                       Day {index}
                     </span>
                     
