@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- WORDSデータ（省略せず保持） ---
+// --- WORDSデータ（全31日分 ＋ カバー） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
@@ -41,7 +41,7 @@ const WORDS = [
 
 export default function Home() {
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // 💡 アニメーションの方向管理
+  const [direction, setDirection] = useState(0);
   const [showNote, setShowNote] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -64,7 +64,6 @@ export default function Home() {
     } catch (err) { alert("Error: " + err.message); }
   };
 
-  // 💡 進む・戻るで方向（direction）を変える
   const nextCard = () => { setDirection(1); setIndex((prev) => (prev + 1) % WORDS.length); setShowNote(false); };
   const prevCard = () => { setDirection(-1); setIndex((prev) => (prev - 1 + WORDS.length) % WORDS.length); setShowNote(false); };
   const goToTop = () => { setDirection(-1); setIndex(0); setShowNote(false); };
@@ -72,6 +71,13 @@ export default function Home() {
   const handleDragEnd = (event, info) => {
     if (info.offset.x < -30) nextCard();
     else if (info.offset.x > 30) prevCard();
+  };
+
+  // アニメーション設定
+  const variants = {
+    enter: (d) => ({ x: d > 0 ? 300 : -300, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d) => ({ x: d > 0 ? -300 : 300, opacity: 0 })
   };
 
   return (
@@ -89,15 +95,15 @@ export default function Home() {
                 <motion.div
                   key={index}
                   custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => user && index !== 0 && setShowNote(true)}
-                  // 💡 directionに応じて出現・退場の向きを変える
-                  initial={(d) => ({ opacity: 0, x: d > 0 ? 100 : -100 })}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={(d) => ({ opacity: 0, x: d > 0 ? -100 : 100 })}
-                  transition={{ type: "spring", stiffness: 260, damping: 26 }}
+                  transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                   className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute pt-16"
                 >
                   {index === 0 ? (
@@ -127,37 +133,41 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 💡 ナビゲーションエリア */}
-            <div className="w-full max-w-[320px] h-32 flex flex-col items-center justify-center shrink-0">
+            {/* ナビゲーション */}
+            <div className="w-full max-w-[340px] h-40 flex flex-col items-center justify-start shrink-0">
               {!user ? (
-                <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
+                <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg mt-4">
                   {isPiReady ? "Pi Network Login" : "Loading..."}
                 </button>
               ) : (
                 index === 0 ? (
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center pt-4">
                     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-4">Welcome, {user.username}!</motion.p>
-                    <button onClick={nextCard} className="px-14 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform uppercase">OPEN</button>
+                    <button onClick={nextCard} className="px-14 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md uppercase transition-transform active:scale-95">OPEN</button>
                   </div>
                 ) : (
-                  /* 💡 垂直・水平の配置を完璧に */
-                  <div className="flex items-center justify-between w-full px-2">
-                    <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 transition-colors">
-                      &lt;
-                    </button>
+                  <div className="w-full flex flex-col items-center">
+                    {/* DAY表示 */}
+                    <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-4">
+                      Day {index}
+                    </span>
                     
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">
-                        Day {index}
-                      </span>
-                      <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-6 py-2 rounded-full uppercase transition-all">
-                        Top
+                    {/* 操作ボタンエリア: < TOP > を一直線に */}
+                    <div className="flex items-center justify-between w-full px-2">
+                      <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">
+                        &lt;
+                      </button>
+                      
+                      <div className="flex-1 flex justify-center items-center">
+                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-8 py-2.5 rounded-full uppercase transition-all">
+                          Top
+                        </button>
+                      </div>
+
+                      <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">
+                        &gt;
                       </button>
                     </div>
-
-                    <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4 transition-colors">
-                      &gt;
-                    </button>
                   </div>
                 )
               )}
@@ -169,9 +179,6 @@ export default function Home() {
                 <p className="text-[10px] text-gray-500 italic mt-0.5">Zen Verse Flip (Minimal)</p>
               </div>
             </footer>
-            <div className="w-full h-16 flex items-center justify-center bg-gray-50 shrink-0">
-              <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
-            </div>
           </motion.main>
         )}
       </AnimatePresence>
