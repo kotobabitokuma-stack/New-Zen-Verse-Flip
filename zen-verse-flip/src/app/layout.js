@@ -1,11 +1,18 @@
-// app/layout.js の中身
-import Script from "next/script"; // 👈 これをインポート
+import "./globals.css"; // 👈 これがデザインを当てる魔法の一行！
+import Script from "next/script";
+
+// 👇 これが「画面をスマホサイズに収める」ための命令よ！
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ja">
       <head>
-        {/* 👇 これが「最新の読み込み方」よ！ */}
+        {/* Pi NetworkのSDK読み込み */}
         <Script 
           src="https://sdk.minepi.com/pi-sdk.js" 
           strategy="beforeInteractive" 
