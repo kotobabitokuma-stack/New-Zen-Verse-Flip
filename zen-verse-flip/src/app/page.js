@@ -112,22 +112,24 @@ export default function Home() {
                       alt="Cover" 
                     />
                   ) : (
-                    <div className="text-center pt-8">
+                    <div className="text-center pt-8 w-full h-full flex flex-col justify-center items-center">
                       <h2 className="text-3xl font-bold mb-6 px-2 leading-tight text-black">
                         {WORDS[index].mainEn}
                       </h2>
-                      <p className="text-base text-gray-500 px-4 mb-10">
+                      <p className="text-base text-gray-500 px-4">
                         {WORDS[index].subJp}
                       </p>
                       
-                      {/* 💡 タップのヒントを追加 */}
-                      <motion.p 
-                        animate={{ opacity: [0.4, 1, 0.4] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="text-[10px] text-gray-300 tracking-[0.2em] uppercase font-bold"
-                      >
-                        Tap for Note
-                      </motion.p>
+                      {/* 💡 Tap for Note をさらに下に、色を濃く配置 */}
+                      <div className="absolute bottom-10 left-0 right-0">
+                        <motion.p 
+                          animate={{ opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2.5, repeat: Infinity }}
+                          className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold"
+                        >
+                          Tap for Note
+                        </motion.p>
+                      </div>
                     </div>
                   )}
                 </motion.div>
