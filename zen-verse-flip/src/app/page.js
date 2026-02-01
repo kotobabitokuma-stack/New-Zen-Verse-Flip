@@ -116,7 +116,8 @@ export default function Home() {
 
             <div className="w-full flex flex-col items-center bg-white border-t border-gray-50 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
               
-              <div className="w-full flex flex-col items-center py-6">
+              {/* 💡 py-6 から pt-12 pb-6 にして、全体を下に移動させたわ */}
+              <div className="w-full flex flex-col items-center pt-12 pb-6">
                 {!user ? (
                   <div className="w-full max-w-[280px] px-6">
                     <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
@@ -127,7 +128,6 @@ export default function Home() {
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
                       <>
-                        {/* 💡 mb-12 から mb-2 にしてOPENボタンに思い切り寄せたわ */}
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </>
