@@ -74,6 +74,7 @@ export default function Home() {
 
   const nextCard = () => { setIndex((prev) => (prev + 1) % WORDS.length); setShowNote(false); };
   const prevCard = () => { setIndex((prev) => (prev - 1 + WORDS.length) % WORDS.length); setShowNote(false); };
+  const goToTop = () => { setIndex(0); setShowNote(false); };
 
   const handleDragEnd = (event, info) => {
     if (info.offset.x < -30) nextCard();
@@ -107,7 +108,7 @@ export default function Home() {
                   {index === 0 ? (
                     <img 
                       src={WORDS[0].image} 
-                      className="w-full h-auto max-h-[85vh] object-contain pointer-events-none" 
+                      className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" 
                       alt="Cover" 
                     />
                   ) : (
@@ -123,7 +124,6 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* 解説オーバーレイ */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div
@@ -143,7 +143,7 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* ログイン・メッセージエリア */}
+            {/* ナビゲーション & ログインエリア */}
             <div className="w-full max-w-[280px] h-32 flex flex-col items-center justify-center shrink-0">
               {!user ? (
                 <button
@@ -154,7 +154,7 @@ export default function Home() {
                   {isPiReady ? "Pi Network Login" : "Loading..."}
                 </button>
               ) : (
-                index === 0 && (
+                index === 0 ? (
                   <>
                     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-4">
                       Welcome, {user.username}!
@@ -166,6 +166,19 @@ export default function Home() {
                       OPEN
                     </button>
                   </>
+                ) : (
+                  /* 💡 ナビゲーションボタン < TOP > */
+                  <div className="flex items-center justify-between w-full px-4">
+                    <button onClick={prevCard} className="text-3xl text-gray-400 hover:text-black p-2">
+                      &lt;
+                    </button>
+                    <button onClick={goToTop} className="text-xs font-bold text-gray-500 hover:text-black tracking-widest border border-gray-200 px-4 py-1 rounded-full uppercase">
+                      Top
+                    </button>
+                    <button onClick={nextCard} className="text-3xl text-gray-400 hover:text-black p-2">
+                      &gt;
+                    </button>
+                  </div>
                 )
               )}
             </div>
