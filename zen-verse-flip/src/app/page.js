@@ -56,27 +56,23 @@ const handlePayment = async () => {
         memo: "KBKテスト決済",
         metadata: { productId: "test_001" },
       }, {
-   // 💰 修正：ただログを出すだけでなく、サーバーの承認窓口を呼び出すわ！
-        onReadyForServerApproval: async (paymentId) => {
-          console.log("サーバー承認リクエスト送信中...", paymentId);
-          try {
-            await fetch("/api/payment/approve", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ paymentId }),
-            });
-          } catch (error) {
-            console.error("承認リクエスト失敗:", error);
-          }
-        },
-        // 💰 ここが重要！決済が完了したら自前APIに報告する
-        onReadyForServerCompletion: async (paymentId, txid) => {
-          console.log("決済完了！サーバーに報告中...", paymentId);
-          await fetch("/api/payment/complete", {
-            method: "POST",
-            body: JSON.stringify({ paymentId, txid }),
-          });
-        },
+// ...今あるコードのこの部分だけを書き換えるわ
+onReadyForServerApproval: async (paymentId) => {
+  // 画面は何も変わらない。裏で「承認して！」と Vercel に伝えるだけ
+  await fetch("/api/payment/approve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ paymentId }),
+  });
+},
+onReadyForServerCompletion: async (paymentId, txid) => {
+  // ここも裏で「完了したよ！」と伝えるだけ
+  await fetch("/api/payment/complete", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ paymentId, txid }),
+  });
+},
         onCancel: (paymentId) => { console.log("キャンセル:", paymentId); },
         onError: (error) => { console.error("エラー:", error); },
       });
@@ -105,11 +101,34 @@ const handlePayment = async () => {
     return () => clearTimeout(timer);
   }, []);
 
-// --- 未完了決済の処理（これがないとエラーになっちゃうわ） ---
-  const onIncompletePaymentFound = (payment) => {
-    console.log("未完了の決済を見つけたわ:", payment);
-    // 本来はここでサーバーに報告するけれど、今はログに出すだけでOKよ
-  };
+// --- 未完了決済の処理（これを見つけたら即座にお掃除するわ！） ---
+const onIncompletePaymentFound = async (payment) => {
+  console.log("未完了の決済を見つけたわ！掃除を開始するわね:", payment.identifier);
+  
+  try {
+    // 1. まずは「承認」を試みる
+    await fetch("/api/payment/approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paymentId: payment.identifier }),
+    });
+
+    // 2. 次に、もし送金済みなら「完了」を試みる
+    if (payment.transaction && payment.transaction.txid) {
+      await fetch("/api/payment/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          paymentId: payment.identifier, 
+          txid: payment.transaction.txid 
+        }),
+      });
+    }
+    console.log("お掃除完了よ！");
+  } catch (err) {
+    console.error("お掃除中にエラーが出たわ（無視してOK）:", err);
+  }
+};
 
   // --- ログイン処理 ---
  const handleLogin = async () => {
