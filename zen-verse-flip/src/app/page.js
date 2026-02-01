@@ -88,7 +88,7 @@ export default function Home() {
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative flex flex-col h-full w-full bg-white">
             
-            <div className="flex-1 flex flex-col items-center pt-4 px-6 overflow-hidden">
+            <div className="flex-1 flex flex-col items-center pt-2 px-6 overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
@@ -102,8 +102,8 @@ export default function Home() {
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    /* 💡 画像自体の最大高さを少し抑えて、ボタンが被る物理的な隙間を確保したわ */
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[62vh] object-contain pointer-events-none" alt="Cover" />
+                    /* 💡 表紙サイズを 80vh に厳守したわ */
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
                     <div className="text-center w-full pt-28">
                       <h2 className="text-4xl font-bold mb-10 leading-tight px-2">{WORDS[index].mainEn}</h2>
@@ -115,12 +115,11 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 💡 ボタンエリアを画面下部に完全に固定するコンテナよ */}
-            <div className="w-full flex flex-col items-center bg-white">
+            <div className="w-full flex flex-col items-center bg-white border-t border-gray-50">
               
-              <div className="w-full flex flex-col items-center py-4 min-h-[140px] relative">
+              <div className="w-full flex flex-col items-center py-2 relative">
                 {!user ? (
-                  <div className="w-full max-w-[280px] px-6">
+                  <div className="w-full max-w-[280px] px-6 py-2">
                     <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
                       {isPiReady ? "Pi Network Login" : "Loading..."}
                     </button>
@@ -128,18 +127,18 @@ export default function Home() {
                 ) : (
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
-                      /* 💡 ここが Welcome & OPEN のセット。極限まで下げたわ */
-                      <div className="flex flex-col items-center">
-                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
-                        <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
+                      /* 💡 ここをギリギリまで下げたわ */
+                      <div className="flex flex-col items-center pb-2">
+                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[12px] font-bold text-gray-600 mb-1 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                        <button onClick={nextCard} className="px-16 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </div>
                     ) : (
-                      <div className="pt-2">
-                        <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] block text-center mb-4">Day {index}</span>
+                      <div className="py-2">
+                        <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.3em] block text-center mb-2">Day {index}</span>
                         <div className="flex items-center justify-between w-full px-8">
-                          <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4">&lt;</button>
-                          <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase">Top</button>
-                          <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4">&gt;</button>
+                          <button onClick={prevCard} className="text-3xl text-gray-300 hover:text-black px-4">&lt;</button>
+                          <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-8 py-2 rounded-full uppercase">Top</button>
+                          <button onClick={nextCard} className="text-3xl text-gray-300 hover:text-black px-4">&gt;</button>
                         </div>
                       </div>
                     )}
@@ -147,13 +146,13 @@ export default function Home() {
                 )}
               </div>
 
-              <footer className="w-full text-center py-4 border-t border-gray-100 flex flex-col items-center gap-1">
-                <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
-                <p className="text-[10px] text-gray-400 italic font-medium tracking-tight">Zen Verse Flip Minimal</p>
+              <footer className="w-full text-center py-2 border-t border-gray-100 flex flex-col items-center">
+                <p className="text-xs text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
+                <p className="text-[9px] text-gray-400 italic font-medium tracking-tight">Zen Verse Flip Minimal</p>
               </footer>
 
-              <div className="w-full h-16 flex items-center justify-center bg-gray-50">
-                <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
+              <div className="w-full h-12 flex items-center justify-center bg-gray-50">
+                <p className="text-[9px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
               </div>
             </div>
 
