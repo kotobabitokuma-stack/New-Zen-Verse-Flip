@@ -87,8 +87,9 @@ export default function Home() {
             <img src="/Loading.png" alt="Loading" className="w-full max-w-[280px]" />
           </motion.div>
         ) : (
-          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white h-full relative">
+          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white overflow-hidden relative">
             
+            {/* 💡 メイン表示エリア: overflow-hiddenで画像がはみ出さないように */}
             <div className="flex-1 w-full max-w-sm flex items-center justify-center px-6 relative overflow-hidden">
               <AnimatePresence initial={false} custom={direction}>
                 <motion.div
@@ -103,12 +104,12 @@ export default function Home() {
                   onDragEnd={handleDragEnd}
                   onClick={() => user && index !== 0 && setShowNote(true)}
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute pt-16"
+                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute"
                 >
                   {index === 0 ? (
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" alt="Cover" />
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[75vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
-                    <div className="text-center pt-8 w-full h-full flex flex-col justify-center items-center">
+                    <div className="text-center w-full h-full flex flex-col justify-center items-center">
                       <h2 className="text-3xl font-bold mb-6 px-2 leading-tight text-black">{WORDS[index].mainEn}</h2>
                       <p className="text-base text-gray-500 px-4">{WORDS[index].subJp}</p>
                       <div className="absolute bottom-10 left-0 right-0">
@@ -119,6 +120,7 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
+              {/* Note表示 */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="absolute inset-0 z-50 bg-black/50 flex flex-col items-center justify-center p-8 backdrop-blur-[2px]">
@@ -132,53 +134,48 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* ナビゲーションエリア */}
-            <div className="w-full max-w-[340px] h-44 flex flex-col items-center justify-start shrink-0">
+            {/* ナビゲーション・操作エリア */}
+            <div className="w-full max-w-[340px] h-48 flex flex-col items-center justify-center shrink-0">
               {!user ? (
-                /* 💡 ログインボタンをさらに下に配置 */
-                <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg mt-10">
-                  {isPiReady ? "Pi Network Login" : "Loading..."}
-                </button>
+                <div className="w-full flex justify-center py-4">
+                  <button onClick={handleLogin} disabled={!isPiReady} className="w-full max-w-[280px] py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
+                    {isPiReady ? "Pi Network Login" : "Loading..."}
+                  </button>
+                </div>
               ) : (
                 index === 0 ? (
-                  <div className="flex flex-col items-center pt-4">
+                  <div className="flex flex-col items-center py-4">
                     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-4">Welcome, {user.username}!</motion.p>
                     <button onClick={nextCard} className="px-14 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md uppercase transition-transform active:scale-95">OPEN</button>
                   </div>
                 ) : (
                   <div className="w-full flex flex-col items-center">
-                    {/* 💡 DAY表示を少し下げてボタンに近づける */}
-                    <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mt-4 mb-2">
-                      Day {index}
-                    </span>
-                    
-                    {/* 操作ボタンエリア: < TOP > を一直線に */}
+                    <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mt-2 mb-2">Day {index}</span>
                     <div className="flex items-center justify-between w-full px-2">
-                      <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">
-                        &lt;
-                      </button>
-                      
+                      <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">&lt;</button>
                       <div className="flex-1 flex justify-center items-center">
-                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-8 py-2.5 rounded-full uppercase transition-all">
-                          Top
-                        </button>
+                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-8 py-2.5 rounded-full uppercase transition-all">Top</button>
                       </div>
-
-                      <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">
-                        &gt;
-                      </button>
+                      <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">&gt;</button>
                     </div>
                   </div>
                 )
               )}
             </div>
 
-            <footer className="w-full text-center py-4 shrink-0 bg-white border-t border-gray-100">
+            {/* フッター */}
+            <footer className="w-full text-center py-3 shrink-0 bg-white border-t border-gray-100">
               <div className="mx-10">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
                 <p className="text-[10px] text-gray-500 italic mt-0.5">Zen Verse Flip (Minimal)</p>
               </div>
             </footer>
+
+            {/* 💡 広告スペースの復活 */}
+            <div className="w-full h-16 flex items-center justify-center bg-gray-50 shrink-0">
+              <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
+            </div>
+
           </motion.main>
         )}
       </AnimatePresence>
