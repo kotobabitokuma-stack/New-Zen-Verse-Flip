@@ -22,7 +22,7 @@ const WORDS = [
   { id: 15, mainEn: "I feel a little embarrassed, but I want to tell you that I love you.", subJp: "ちょっと照れくさいけど", noteEn: "Don't keep it hidden. If it's too much, a simple \"Thank you\" is enough.", noteJp: "照れくさくても、大切な人には言葉で伝えましょう。" },
   { id: 16, mainEn: "Take three steps forward, then take two more with vigor", subJp: "三歩すすんで二歩すすむ", noteEn: "Only those who keep moving get to enjoy the scenery.", noteJp: "自分を信じて、未来へ突き進みましょう。" },
   { id: 17, mainEn: "I'll always give you a push from behind", subJp: "いつでも背中を押してやる", noteEn: "I am always here to support you. Everything will be all right!", noteJp: "私はいつでも、この言葉を通してあなたの味方です。" },
-  { id: 18, mainEn: "Tears Know No Age", subJp: "大人だって泣いていいんだよ", noteEn: "Tears are meant to be shed. Let your emotions flow.", noteJp: "その涙の温もりが, あなたの人生を温めてくれます。" },
+  { id: 18, mainEn: "Tears Know No Age", subJp: "大人だって泣いていいんだよ", noteEn: "Tears are meant to be shed. Let your emotions flow.", noteJp: "その涙の温もりが、あなたの人生を温めてくれます。" },
   { id: 19, mainEn: "Even when eight direction are blocked, search for the ninth direction", subJp: "八方塞がっても九方目を探せ", noteEn: "When all ways seem blocked, look for a new path.", noteJp: "諦めずに「九方目」を探しましょう。" },
   { id: 20, mainEn: "Although it's painful, frustrating, and lonely, it's Heno Kappa", subJp: "苦しいけれど悔しいけれど寂しいけれど", noteEn: "Embracing those feelings is what makes your kindness real.", noteJp: "苦しい時に「苦しい」と感じる自分も否定しないで。" },
   { id: 21, mainEn: "It's okay, the sun is always watching over you!", subJp: "大丈夫いつだってお天道さんが見ているよ", noteEn: "The sun is always watching. You know your own effort.", noteJp: "あなた自身が自分の努力を知っている、それだけで十分なのです。" },
@@ -104,7 +104,7 @@ export default function Home() {
                   {index === 0 ? (
                     <img src={WORDS[0].image} className="w-full h-auto max-h-[70vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
-                    <div className="text-center w-full pt-16">
+                    <div className="text-center w-full pt-28">
                       <h2 className="text-4xl font-bold mb-10 leading-tight px-2">{WORDS[index].mainEn}</h2>
                       <p className="text-lg text-gray-500 mb-14 px-4">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">Tap for Note</motion.p>
@@ -127,9 +127,7 @@ export default function Home() {
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
                       <>
-                        {/* 💡 Welcomeメッセージを mb-12 に増やして下げたわ */}
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-12 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
-                        {/* 💡 OPENボタンも位置が下がるわ */}
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </>
                     ) : (
@@ -146,8 +144,10 @@ export default function Home() {
                 )}
               </div>
 
-              <footer className="w-full text-center py-4 border-t border-gray-100">
+              {/* フッター：サブタイトルを復活させたわよ */}
+              <footer className="w-full text-center py-4 border-t border-gray-100 flex flex-col items-center gap-1">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
+                <p className="text-[10px] text-gray-400 italic font-medium tracking-tight">Zen Verse Flip Minimal</p>
               </footer>
 
               <div className="w-full h-16 flex items-center justify-center bg-gray-50">
