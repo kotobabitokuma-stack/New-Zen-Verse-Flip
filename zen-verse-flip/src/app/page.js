@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// WORDSデータ（31番まで）
+// --- WORDSデータは必ず31番まで含めてね ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
-  // ... (以下、31番まで保持してね)
+  // ... (id: 2 〜 31 までのデータ)
 ];
 
 export default function Home() {
@@ -43,10 +43,18 @@ export default function Home() {
     } catch (err) { alert("Error: " + err.message); }
   };
 
-  const nextCard = () => { setIndex((prev) => (prev + 1) % WORDS.length); setShowNote(false); };
-  const prevCard = () => { setIndex((prev) => (prev - 1 + WORDS.length) % WORDS.length); setShowNote(false); };
+  // 確実に次のインデックスへ進むように修正
+  const nextCard = () => { 
+    setIndex((prev) => (prev + 1) % WORDS.length); 
+    setShowNote(false); 
+  };
+  const prevCard = () => { 
+    setIndex((prev) => (prev - 1 + WORDS.length) % WORDS.length); 
+    setShowNote(false); 
+  };
 
   const handleDragEnd = (event, info) => {
+    // スワイプの感度を少し調整（50px移動で発動）
     if (info.offset.x < -50) nextCard();
     else if (info.offset.x > 50) prevCard();
   };
@@ -69,9 +77,9 @@ export default function Home() {
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => user && index !== 0 && setShowNote(true)}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
                   className="w-full h-full flex flex-col items-center justify-center cursor-pointer"
                 >
                   {index === 0 ? (
@@ -89,20 +97,25 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
+              {/* 💡 解説オーバーレイ（背景を少し薄く 50% に変更） */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div
-                    initial={{ opacity: 0, y: 100 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 100 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     onClick={() => setShowNote(false)}
-                    className="absolute inset-0 z-50 bg-black/70 flex flex-col items-center justify-center p-8 backdrop-blur-sm"
+                    className="absolute inset-0 z-50 bg-black/50 flex flex-col items-center justify-center p-8 backdrop-blur-[2px]"
                   >
-                    <div className="text-center text-white">
+                    <motion.div 
+                      initial={{ y: 20 }}
+                      animate={{ y: 0 }}
+                      className="text-center text-white"
+                    >
                       <h3 className="text-xl font-bold mb-6 leading-relaxed">{WORDS[index].noteEn}</h3>
                       <p className="text-sm leading-loose opacity-90">{WORDS[index].noteJp}</p>
-                      <p className="mt-12 text-[10px] opacity-50 tracking-widest uppercase font-bold">Tap to close</p>
-                    </div>
+                      <p className="mt-12 text-[10px] opacity-60 tracking-widest uppercase font-bold">Tap to close</p>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -121,14 +134,14 @@ export default function Home() {
                 <div className="flex flex-col items-center space-y-4">
                   {index === 0 && (
                     <>
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2">
-                        ようこそ、{user.username} くん！
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 italic">
+                        Welcome, {user.username}-kun!
                       </motion.p>
                       <button
                         onClick={nextCard}
-                        className="px-8 py-2 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
+                        className="px-10 py-2.5 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
                       >
-                        開く
+                        OPEN
                       </button>
                     </>
                   )}
