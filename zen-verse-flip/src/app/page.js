@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link"; // ← 追加
 
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
@@ -102,7 +103,6 @@ export default function Home() {
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    /* 💡 表紙サイズを 80vh に厳守したわ */
                     <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
                     <div className="text-center w-full pt-28">
@@ -127,7 +127,6 @@ export default function Home() {
                 ) : (
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
-                      /* 💡 ここをギリギリまで下げたわ */
                       <div className="flex flex-col items-center pb-2">
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[12px] font-bold text-gray-600 mb-1 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
@@ -146,9 +145,15 @@ export default function Home() {
                 )}
               </div>
 
-              <footer className="w-full text-center py-2 border-t border-gray-100 flex flex-col items-center">
-                <p className="text-xs text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
-                <p className="text-[9px] text-gray-400 italic font-medium tracking-tight">Zen Verse Flip Minimal</p>
+              {/* 💡 修正したフッター部分 */}
+              <footer className="w-full text-center py-3 border-t border-gray-100 flex flex-col items-center bg-white">
+                <div className="flex gap-4 mb-2 text-[9px] font-bold text-gray-400 tracking-wider">
+                  <Link href="/privacy" className="hover:text-black">PRIVACY</Link>
+                  <span>|</span>
+                  <Link href="/terms" className="hover:text-black">TERMS</Link>
+                </div>
+                <p className="text-[10px] text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
+                <p className="text-[8px] text-gray-300 italic font-medium tracking-tight">Designed by Gemini 3 Flash</p>
               </footer>
 
               <div className="w-full h-12 flex items-center justify-center bg-gray-50">
