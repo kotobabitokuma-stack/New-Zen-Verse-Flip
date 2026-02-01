@@ -127,7 +127,8 @@ export default function Home() {
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
                       <>
-                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-12 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                        {/* 💡 mb-12 から mb-2 にしてOPENボタンに思い切り寄せたわ */}
+                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </>
                     ) : (
@@ -144,7 +145,6 @@ export default function Home() {
                 )}
               </div>
 
-              {/* フッター：サブタイトルを復活させたわよ */}
               <footer className="w-full text-center py-4 border-t border-gray-100 flex flex-col items-center gap-1">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
                 <p className="text-[10px] text-gray-400 italic font-medium tracking-tight">Zen Verse Flip Minimal</p>
