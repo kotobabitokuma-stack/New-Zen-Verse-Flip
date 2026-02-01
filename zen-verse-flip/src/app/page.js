@@ -48,7 +48,7 @@ const WORDS = [
 
 export default function Home() {
   // 💰 決済の命令（これを呼ぶとPiの支払い画面が開くわ）
-  const handlePayment = async () => {
+const handlePayment = async () => {
     if (!window.Pi) return;
     try {
       await window.Pi.createPayment({
@@ -56,10 +56,21 @@ export default function Home() {
         memo: "KBKテスト決済",
         metadata: { productId: "test_001" },
       }, {
-        onReadyForServerApproval: (paymentId) => { console.log("承認待ち", paymentId); },
-        onReadyForServerCompletion: (paymentId, txid) => { console.log("完了待ち", paymentId, txid); },
-        onCancel: (paymentId) => { console.log("キャンセル", paymentId); },
-        onError: (error) => { console.error("エラー", error); },
+        // サーバーに承認を依頼する（今は自動でログを出す設定）
+        onReadyForServerApproval: (paymentId) => {
+          console.log("サーバー承認待ち:", paymentId);
+          // 本番はここで自前のサーバーを呼び出すわ
+        },
+        // 💰 ここが重要！決済が完了したら自前APIに報告する
+        onReadyForServerCompletion: async (paymentId, txid) => {
+          console.log("決済完了！サーバーに報告中...", paymentId);
+          await fetch("/api/payment/complete", {
+            method: "POST",
+            body: JSON.stringify({ paymentId, txid }),
+          });
+        },
+        onCancel: (paymentId) => { console.log("キャンセル:", paymentId); },
+        onError: (error) => { console.error("エラー:", error); },
       });
     } catch (err) {
       alert("エラー: " + err.message);
@@ -86,21 +97,27 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // --- ログイン処理（ボタンを押した時に走る） ---
-  const handleLogin = async () => {
-    if (!window.Pi) return;
-    
+// --- 未完了決済の処理（これがないとエラーになっちゃうわ） ---
+  const onIncompletePaymentFound = (payment) => {
+    console.log("未完了の決済を見つけたわ:", payment);
+    // 本来はここでサーバーに報告するけれど、今はログに出すだけでOKよ
+  };
+
+  // --- ログイン処理 ---
+ const handleLogin = async () => {
+    console.log("Button clicked");
+    if (!window.Pi) {
+      alert("SDKが読み込まれていないわ！Pi Browserで開いているか確認してね。");
+      return;
+    }
+    alert("Pi SDKと通信を開始するわよ！"); 
     try {
-      // 決済(payments)は含めず、まずは名前(username)だけ取得！
-      const scopes = ["username"];
-      const auth = await window.Pi.authenticate(scopes, (payment) => {
-        /* 未完了決済の処理（今は空でOK） */
-      });
-      
-      setUser(auth.user); // 成功したらユーザー情報をセット
-      console.log("Login Success:", auth.user.username);
+      const scopes = ["username", "payments"];
+      const auth = await window.Pi.authenticate(scopes, onIncompletePaymentFound);
+      setUser(auth.user);
+      alert("ログイン成功！: " + auth.user.username);
     } catch (err) {
-      console.error("Login Failed:", err);
+      alert("エラーが発生したわ: " + err.message);
     }
   };
 
