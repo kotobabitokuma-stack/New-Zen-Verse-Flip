@@ -167,14 +167,21 @@ export default function Home() {
                     </button>
                   </>
                 ) : (
-                  /* 💡 ナビゲーションボタン < TOP > */
                   <div className="flex items-center justify-between w-full px-4">
                     <button onClick={prevCard} className="text-3xl text-gray-400 hover:text-black p-2">
                       &lt;
                     </button>
-                    <button onClick={goToTop} className="text-xs font-bold text-gray-500 hover:text-black tracking-widest border border-gray-200 px-4 py-1 rounded-full uppercase">
-                      Top
-                    </button>
+                    
+                    {/* 💡 Day表示とTopボタンの組み合わせ */}
+                    <div className="flex flex-col items-center">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">
+                        Day {index}
+                      </span>
+                      <button onClick={goToTop} className="text-[10px] font-bold text-gray-500 hover:text-black tracking-widest border border-gray-200 px-4 py-1 rounded-full uppercase">
+                        Top
+                      </button>
+                    </div>
+
                     <button onClick={nextCard} className="text-3xl text-gray-400 hover:text-black p-2">
                       &gt;
                     </button>
