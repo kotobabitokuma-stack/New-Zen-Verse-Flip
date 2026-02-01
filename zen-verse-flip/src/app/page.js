@@ -106,12 +106,10 @@ export default function Home() {
                 >
                   {index === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full max-h-full">
-                      {/* 💡 表紙サイズを大きく(max-h-[75vh])に戻したわ */}
                       <img src={WORDS[0].image} className="w-full h-auto max-h-[75vh] object-contain pointer-events-none mb-4" alt="Cover" />
                     </div>
                   ) : (
                     <div className="text-center w-full flex flex-col justify-center items-center">
-                      {/* 💡 言葉のサイズを大きく(text-4xl)したわ */}
                       <h2 className="text-4xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
                       <p className="text-lg text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Tap for Note</motion.p>
@@ -135,7 +133,8 @@ export default function Home() {
 
             <div className="w-full flex flex-col items-center justify-end shrink-0 bg-white z-20 pb-4">
               {!user ? (
-                <div className="w-full max-w-[280px] pb-10">
+                /* 💡 ログインボタン位置をさらに下げる(pb-16) */
+                <div className="w-full max-w-[280px] pb-16">
                   <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
                     {isPiReady ? "Pi Network Login" : "Loading..."}
                   </button>
@@ -144,12 +143,14 @@ export default function Home() {
                 <div className="w-full max-w-[340px] pb-6 flex flex-col items-center">
                   {index === 0 ? (
                     <>
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-6">Welcome, {user.username}!</motion.p>
+                      {/* 💡 Welcomeメッセージも少し下げる(mb-10) */}
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-10">Welcome, {user.username}!</motion.p>
                       <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md uppercase">OPEN</button>
                     </>
                   ) : (
                     <>
-                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-6">Day {index}</span>
+                      {/* 💡 DAY表示を少し下げる(mb-8) */}
+                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-8">Day {index}</span>
                       <div className="flex items-center justify-between w-full px-4 mb-2">
                         <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">&lt;</button>
                         <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-10 py-3 rounded-full uppercase transition-all">Top</button>
