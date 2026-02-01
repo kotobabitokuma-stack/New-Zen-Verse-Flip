@@ -79,94 +79,91 @@ export default function Home() {
   };
 
   return (
-    <div className="fixed inset-0 bg-white text-black flex flex-col overflow-y-auto">
+    <div className="fixed inset-0 bg-white text-black flex flex-col overflow-hidden">
       <AnimatePresence>
         {isLoading ? (
-          <motion.div key="loader" className="fixed inset-0 flex flex-col items-center justify-center bg-white z-[200]" exit={{ opacity: 0 }}>
-            <img src="/Loading.png" alt="Loading" className="w-full max-w-[280px]" />
+          <motion.div key="loader" className="fixed inset-0 flex items-center justify-center bg-white z-[200]" exit={{ opacity: 0 }}>
+            <img src="/Loading.png" alt="Loading" className="w-64" />
           </motion.div>
         ) : (
-          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col min-h-full w-full bg-white relative">
+          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative h-full w-full bg-white">
             
-            {/* 💡 コンテンツエリア：上から配置して「上が切れる」のを防ぐ */}
-            <div className="w-full flex flex-col items-center px-6 pt-10">
+            {/* メイン画像・テキストエリア */}
+            <div className="absolute inset-0 flex flex-col items-center pt-8 px-6">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
                   custom={direction}
                   variants={variants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
+                  initial="enter" animate="center" exit="exit"
+                  drag="x" dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => { if (user && index !== 0) setShowNote(true); }}
                   className="w-full flex flex-col items-center cursor-pointer"
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    /* 💡 表紙：80vh厳守、object-topで上を切らさない、mt-10で少し下げる */
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain object-top pointer-events-none mt-10" alt="Cover" />
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[75vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
-                    <div className="text-center w-full pt-16 pb-10">
-                      <h2 className="text-4xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
-                      <p className="text-lg text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
-                      <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Tap for Note</motion.p>
+                    <div className="text-center w-full pt-20">
+                      <h2 className="text-4xl font-bold mb-10 leading-tight">{WORDS[index].mainEn}</h2>
+                      <p className="text-lg text-gray-500 mb-14">{WORDS[index].subJp}</p>
+                      <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">Tap for Note</motion.p>
                     </div>
                   )}
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* 💡 操作エリア：pb-32でログインボタンを最下部へ */}
-            <div className="w-full mt-auto flex flex-col items-center bg-white z-20">
+            {/* 固定ナビゲーションエリア（画面下部に常に表示） */}
+            <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center z-50 bg-gradient-to-t from-white via-white/90 to-transparent pt-10">
               {!user ? (
-                <div className="w-full max-w-[280px] pt-10 pb-32 text-center">
-                  <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
+                <div className="w-full max-w-[280px] pb-12 px-6">
+                  <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
                     {isPiReady ? "Pi Network Login" : "Loading..."}
                   </button>
                 </div>
               ) : (
-                <div className="w-full max-w-[340px] flex flex-col items-center pt-8 pb-10">
+                <div className="w-full max-w-[340px] flex flex-col items-center pb-8">
                   {index === 0 ? (
                     <>
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-14">Welcome, {user.username}!</motion.p>
-                      <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md uppercase">OPEN</button>
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-6 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                      <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                     </>
                   ) : (
                     <>
-                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-24">Day {index}</span>
-                      <div className="flex items-center justify-between w-full px-4 mb-2">
-                        <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16">&lt;</button>
-                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase tracking-widest">Top</button>
-                        <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16">&gt;</button>
+                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-8">Day {index}</span>
+                      <div className="flex items-center justify-between w-full px-8">
+                        <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4">&lt;</button>
+                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase">Top</button>
+                        <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4">&gt;</button>
                       </div>
                     </>
                   )}
                 </div>
               )}
 
-              <footer className="w-full text-center py-4 border-t border-gray-100 mt-auto">
-                <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
+              {/* フッター情報 */}
+              <footer className="w-full text-center py-2 bg-white">
+                <p className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">kotobabito</p>
+                <div className="h-8 flex items-center justify-center opacity-30">
+                  <p className="text-[8px] uppercase font-bold">Ad Space</p>
+                </div>
               </footer>
-              <div className="w-full h-16 flex items-center justify-center bg-gray-50">
-                <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
-              </div>
             </div>
 
+            {/* Note表示 */}
             <AnimatePresence>
               {showNote && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="fixed inset-0 z-[150] bg-black/50 flex items-center justify-center p-8 backdrop-blur-sm">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-8 backdrop-blur-sm">
                   <div className="text-center text-white max-w-sm">
-                    <h3 className="text-2xl font-bold mb-8">{WORDS[index].noteEn}</h3>
-                    <p className="text-base opacity-95">{WORDS[index].noteJp}</p>
-                    <p className="mt-14 text-xs opacity-60 uppercase font-bold tracking-widest italic">Tap to close</p>
+                    <h3 className="text-2xl font-bold mb-8 leading-tight">{WORDS[index].noteEn}</h3>
+                    <p className="text-base opacity-90">{WORDS[index].noteJp}</p>
+                    <p className="mt-12 text-[10px] opacity-50 uppercase tracking-widest font-bold">Tap to close</p>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-
           </motion.main>
         )}
       </AnimatePresence>
