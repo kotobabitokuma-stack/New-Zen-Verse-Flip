@@ -12,13 +12,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ja">
       <head>
-        {/* Pi NetworkのSDK読み込み */}
         <Script 
           src="https://sdk.minepi.com/pi-sdk.js" 
           strategy="beforeInteractive" 
         />
       </head>
-      <body>{children}</body>
+      <body className="antialiased">
+        {children} {/* 👈 これが超重要！これがないと中身が表示されないわ */}
+      </body>
     </html>
   );
 }
