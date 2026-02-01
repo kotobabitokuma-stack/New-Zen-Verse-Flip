@@ -79,17 +79,18 @@ export default function Home() {
   };
 
   return (
-    <div className="fixed inset-0 bg-white text-black flex flex-col">
+    <div className="fixed inset-0 bg-white text-black flex flex-col overflow-y-auto">
       <AnimatePresence>
         {isLoading ? (
-          <motion.div key="loader" className="flex h-screen flex-col items-center justify-center bg-white z-[200]" exit={{ opacity: 0 }}>
+          <motion.div key="loader" className="fixed inset-0 flex flex-col items-center justify-center bg-white z-[200]" exit={{ opacity: 0 }}>
             <img src="/Loading.png" alt="Loading" className="w-full max-w-[280px]" />
           </motion.div>
         ) : (
-          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full bg-white relative overflow-hidden">
+          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col min-h-full w-full bg-white relative">
             
-            <div className="flex-1 flex flex-col items-center justify-center px-6 relative pt-4">
-              <AnimatePresence initial={false} custom={direction}>
+            {/* 💡 コンテンツエリア：上から配置して「上が切れる」のを防ぐ */}
+            <div className="w-full flex flex-col items-center px-6 pt-10">
+              <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
                   custom={direction}
@@ -101,14 +102,14 @@ export default function Home() {
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => { if (user && index !== 0) setShowNote(true); }}
-                  className="w-full h-full flex flex-col items-center justify-center cursor-pointer absolute"
+                  className="w-full flex flex-col items-center cursor-pointer"
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    /* 💡 表紙サイズを 80vh に設定したわ */
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain pointer-events-none" alt="Cover" />
+                    /* 💡 表紙：80vh厳守、object-topで上を切らさない、mt-10で少し下げる */
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[80vh] object-contain object-top pointer-events-none mt-10" alt="Cover" />
                   ) : (
-                    <div className="text-center w-full">
+                    <div className="text-center w-full pt-16 pb-10">
                       <h2 className="text-4xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
                       <p className="text-lg text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Tap for Note</motion.p>
@@ -118,9 +119,10 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            <div className="shrink-0 flex flex-col items-center bg-white z-20">
+            {/* 💡 操作エリア：pb-32でログインボタンを最下部へ */}
+            <div className="w-full mt-auto flex flex-col items-center bg-white z-20">
               {!user ? (
-                <div className="w-full max-w-[280px] pb-24 pt-10 text-center">
+                <div className="w-full max-w-[280px] pt-10 pb-32 text-center">
                   <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg">
                     {isPiReady ? "Pi Network Login" : "Loading..."}
                   </button>
@@ -134,7 +136,6 @@ export default function Home() {
                     </>
                   ) : (
                     <>
-                      {/* 💡 DAY表示を mb-24 でしっかり下げたわ */}
                       <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-24">Day {index}</span>
                       <div className="flex items-center justify-between w-full px-4 mb-2">
                         <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16">&lt;</button>
@@ -146,7 +147,7 @@ export default function Home() {
                 </div>
               )}
 
-              <footer className="w-full text-center py-4 border-t border-gray-100">
+              <footer className="w-full text-center py-4 border-t border-gray-100 mt-auto">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
               </footer>
               <div className="w-full h-16 flex items-center justify-center bg-gray-50">
