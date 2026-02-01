@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // ここを修正したわ！
+import { motion, AnimatePresence } from "framer-motion";
 
-// --- WORDSデータ（全31日分 ＋ カバー） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
@@ -107,12 +106,14 @@ export default function Home() {
                 >
                   {index === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full max-h-full">
-                      <img src={WORDS[0].image} className="w-full h-auto max-h-[65vh] object-contain pointer-events-none mb-4" alt="Cover" />
+                      {/* 💡 表紙サイズを大きく(max-h-[75vh])に戻したわ */}
+                      <img src={WORDS[0].image} className="w-full h-auto max-h-[75vh] object-contain pointer-events-none mb-4" alt="Cover" />
                     </div>
                   ) : (
                     <div className="text-center w-full flex flex-col justify-center items-center">
-                      <h2 className="text-3xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
-                      <p className="text-base text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
+                      {/* 💡 言葉のサイズを大きく(text-4xl)したわ */}
+                      <h2 className="text-4xl font-bold mb-10 px-2 leading-tight">{WORDS[index].mainEn}</h2>
+                      <p className="text-lg text-gray-500 px-4 mb-14">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Tap for Note</motion.p>
                     </div>
                   )}
