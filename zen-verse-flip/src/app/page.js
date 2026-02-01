@@ -113,12 +113,21 @@ export default function Home() {
                     />
                   ) : (
                     <div className="text-center pt-8">
-                      <h2 className="text-3xl font-bold mb-8 px-2 leading-tight text-black">
+                      <h2 className="text-3xl font-bold mb-6 px-2 leading-tight text-black">
                         {WORDS[index].mainEn}
                       </h2>
-                      <p className="text-base text-gray-500 px-4">
+                      <p className="text-base text-gray-500 px-4 mb-10">
                         {WORDS[index].subJp}
                       </p>
+                      
+                      {/* 💡 タップのヒントを追加 */}
+                      <motion.p 
+                        animate={{ opacity: [0.4, 1, 0.4] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="text-[10px] text-gray-300 tracking-[0.2em] uppercase font-bold"
+                      >
+                        Tap for Note
+                      </motion.p>
                     </div>
                   )}
                 </motion.div>
