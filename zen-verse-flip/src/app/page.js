@@ -82,14 +82,13 @@ export default function Home() {
     <div className="fixed inset-0 bg-white text-black flex flex-col overflow-hidden">
       <AnimatePresence>
         {isLoading ? (
-          /* 💡 ここを pt-32 に戻したわ。ロゴが少し上に来るわよ */
           <motion.div key="loader" className="fixed inset-0 flex flex-col items-center pt-32 bg-white z-[200]" exit={{ opacity: 0 }}>
             <img src="/Loading.png" alt="Loading" className="w-64" />
           </motion.div>
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative flex flex-col h-full w-full bg-white">
             
-            <div className="flex-1 flex flex-col items-center pt-8 px-6 overflow-hidden">
+            <div className="flex-1 flex flex-col items-center pt-8 px-6 overflow-hidden text-center">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
@@ -117,7 +116,7 @@ export default function Home() {
 
             <div className="w-full flex flex-col items-center bg-white border-t border-gray-50 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
               
-              <div className="w-full flex flex-col items-center py-6">
+              <div className="w-full flex flex-col items-center py-6 min-h-[160px] justify-center">
                 {!user ? (
                   <div className="w-full max-w-[280px] px-6">
                     <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
@@ -125,10 +124,10 @@ export default function Home() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-full max-w-[340px] flex flex-col items-center">
+                  <div className="w-full max-w-[340px] flex flex-col items-center h-full">
                     {index === 0 ? (
-                      /* 💡 ここを pt-10 にして、セットを押し下げたままにしたわ */
-                      <div className="flex flex-col items-center pt-10">
+                      /* 💡 ここを mt-12 と justify-end で強制的に下げたわ */
+                      <div className="flex flex-col items-center mt-12 pb-2">
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </div>
