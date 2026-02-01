@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "react-motion";
+import { motion, AnimatePresence } from "framer-motion"; // ここを修正したわ！
 
 // --- WORDSデータ（全31日分 ＋ カバー） ---
 const WORDS = [
@@ -89,7 +89,6 @@ export default function Home() {
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col bg-white overflow-hidden relative">
             
-            {/* メインカード表示エリア: ここを全体的に下げる */}
             <div className="flex-1 w-full flex items-center justify-center px-6 relative overflow-hidden pt-12">
               <AnimatePresence initial={false} custom={direction}>
                 <motion.div
@@ -120,7 +119,6 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Note表示用オーバーレイ: 背景を元の薄さに戻したわ */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="absolute inset-0 z-[100] bg-black/50 flex flex-col items-center justify-center p-8 backdrop-blur-sm">
@@ -134,7 +132,6 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 下部操作エリア: 全体的にさらに下げる */}
             <div className="w-full flex flex-col items-center justify-end shrink-0 bg-white z-20 pb-4">
               {!user ? (
                 <div className="w-full max-w-[280px] pb-10">
@@ -151,10 +148,7 @@ export default function Home() {
                     </>
                   ) : (
                     <>
-                      {/* DAY表示をもっと下へ */}
                       <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-6">Day {index}</span>
-                      
-                      {/* ナビゲーションをもっと下へ */}
                       <div className="flex items-center justify-between w-full px-4 mb-2">
                         <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4 w-16 flex justify-center items-center transition-colors">&lt;</button>
                         <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 hover:text-black hover:border-black tracking-widest border border-gray-200 px-10 py-3 rounded-full uppercase transition-all">Top</button>
@@ -165,13 +159,11 @@ export default function Home() {
                 </div>
               )}
 
-              {/* フッター（そのまま） */}
               <footer className="w-full text-center py-4 border-t border-gray-100">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
                 <p className="text-[10px] text-gray-500 italic mt-0.5">Zen Verse Flip (Minimal)</p>
               </footer>
 
-              {/* 広告スペース（そのまま） */}
               <div className="w-full h-16 flex items-center justify-center bg-gray-50">
                 <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
               </div>
