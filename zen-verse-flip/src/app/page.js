@@ -22,7 +22,7 @@ const WORDS = [
   { id: 15, mainEn: "I feel a little embarrassed, but I want to tell you that I love you.", subJp: "ちょっと照れくさいけど", noteEn: "Don't keep it hidden. If it's too much, a simple \"Thank you\" is enough.", noteJp: "照れくさくても、大切な人には言葉で伝えましょう。" },
   { id: 16, mainEn: "Take three steps forward, then take two more with vigor", subJp: "三歩すすんで二歩すすむ", noteEn: "Only those who keep moving get to enjoy the scenery.", noteJp: "自分を信じて、未来へ突き進みましょう。" },
   { id: 17, mainEn: "I'll always give you a push from behind", subJp: "いつでも背中を押してやる", noteEn: "I am always here to support you. Everything will be all right!", noteJp: "私はいつでも、この言葉を通してあなたの味方です。" },
-  { id: 18, mainEn: "Tears Know No Age", subJp: "大人だって泣いていいんだよ", noteEn: "Tears are meant to be shed. Let your emotions flow.", noteJp: "その涙の温もりが、あなたの人生を温めてくれます。" },
+  { id: 18, mainEn: "Tears Know No Age", subJp: "大人だって泣いていいんだよ", noteEn: "Tears are meant to be shed. Let your emotions flow.", noteJp: "その涙の温もりが, あなたの人生を温めてくれます。" },
   { id: 19, mainEn: "Even when eight direction are blocked, search for the ninth direction", subJp: "八方塞がっても九方目を探せ", noteEn: "When all ways seem blocked, look for a new path.", noteJp: "諦めずに「九方目」を探しましょう。" },
   { id: 20, mainEn: "Although it's painful, frustrating, and lonely, it's Heno Kappa", subJp: "苦しいけれど悔しいけれど寂しいけれど", noteEn: "Embracing those feelings is what makes your kindness real.", noteJp: "苦しい時に「苦しい」と感じる自分も否定しないで。" },
   { id: 21, mainEn: "It's okay, the sun is always watching over you!", subJp: "大丈夫いつだってお天道さんが見ているよ", noteEn: "The sun is always watching. You know your own effort.", noteJp: "あなた自身が自分の努力を知っている、それだけで十分なのです。" },
@@ -88,7 +88,6 @@ export default function Home() {
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative flex flex-col h-full w-full bg-white">
             
-            {/* 1. コンテンツ（画像・テキスト）エリア */}
             <div className="flex-1 flex flex-col items-center pt-8 px-6 overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
@@ -115,10 +114,8 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 2. 下部固定ナビ・フッター・広告エリア */}
             <div className="w-full flex flex-col items-center bg-white border-t border-gray-50 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
               
-              {/* 操作系 */}
               <div className="w-full flex flex-col items-center py-6">
                 {!user ? (
                   <div className="w-full max-w-[280px] px-6">
@@ -130,7 +127,9 @@ export default function Home() {
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
                       <>
-                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-6 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                        {/* 💡 Welcomeメッセージを mb-12 に増やして下げたわ */}
+                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-12 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                        {/* 💡 OPENボタンも位置が下がるわ */}
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </>
                     ) : (
@@ -147,18 +146,15 @@ export default function Home() {
                 )}
               </div>
 
-              {/* フッター（元の高さ py-4） */}
               <footer className="w-full text-center py-4 border-t border-gray-100">
                 <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
               </footer>
 
-              {/* 広告（元の高さ h-16） */}
               <div className="w-full h-16 flex items-center justify-center bg-gray-50">
                 <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
               </div>
             </div>
 
-            {/* Note表示 */}
             <AnimatePresence>
               {showNote && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNote(false)} className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-8 backdrop-blur-sm">
