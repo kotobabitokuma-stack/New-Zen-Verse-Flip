@@ -1,31 +1,17 @@
-import { Noto_Serif_JP } from "next/font/google";
-import "./globals.css";
-import Script from "next/script"; // 1. Script コンポーネントをインポート
-
-const notoSerif = Noto_Serif_JP({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: 'swap',
-});
-
-export const metadata = {
-  title: "Zen Verse Flip",
-  description: "Words by kotobabito",
-};
+// app/layout.js の中身
+import Script from "next/script"; // 👈 これをインポート
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ja">
-      <body className={notoSerif.className}>
-        {children}
-        
-        {/* 2. bodyの最後に Pi SDK を読み込む設定を追加 */}
-        {/* strategy="afterInteractive" にすることで、アプリの表示を邪魔せずに読み込めるわよ */}
+      <head>
+        {/* 👇 これが「最新の読み込み方」よ！ */}
         <Script 
           src="https://sdk.minepi.com/pi-sdk.js" 
-          strategy="afterInteractive" 
+          strategy="beforeInteractive" 
         />
-      </body>
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

@@ -47,6 +47,24 @@ const WORDS = [
 // ... (上のWORDSデータなどはそのまま) ...
 
 export default function Home() {
+  // 💰 決済の命令（これを呼ぶとPiの支払い画面が開くわ）
+  const handlePayment = async () => {
+    if (!window.Pi) return;
+    try {
+      await window.Pi.createPayment({
+        amount: 0.1,
+        memo: "KBKテスト決済",
+        metadata: { productId: "test_001" },
+      }, {
+        onReadyForServerApproval: (paymentId) => { console.log("承認待ち", paymentId); },
+        onReadyForServerCompletion: (paymentId, txid) => { console.log("完了待ち", paymentId, txid); },
+        onCancel: (paymentId) => { console.log("キャンセル", paymentId); },
+        onError: (error) => { console.error("エラー", error); },
+      });
+    } catch (err) {
+      alert("エラー: " + err.message);
+    }
+  };
   const [index, setIndex] = useState(0);
   const [showNote, setShowNote] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -118,9 +136,19 @@ export default function Home() {
                   {isPiReady ? "Piでログインして始める" : "Pi SDK 読み込み中..."}
                 </button>
               ) : (
-                <div className="text-center py-2 bg-gray-50 rounded-full border border-gray-200">
-                  <p className="text-sm font-bold text-gray-700">ようこそ、{user.username} くん！</p>
-                </div>
+<div className="text-center space-y-4">
+  <div className="py-2 bg-gray-50 rounded-full border border-gray-200">
+    <p className="text-sm font-bold text-gray-700">ようこそ、{user.username} くん！</p>
+  </div>
+  
+  {/* 👇 ここにチェックリスト10用のボタンを追加したわ！ */}
+  <button
+    onClick={handlePayment}
+    className="w-full py-3 bg-green-500 text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform"
+  >
+    テスト決済 (0.1 Pi) を実行する
+  </button>
+</div>
               )}
             </div>
 
