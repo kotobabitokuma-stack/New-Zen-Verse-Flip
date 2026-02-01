@@ -88,7 +88,7 @@ export default function Home() {
         ) : (
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative flex flex-col h-full w-full bg-white">
             
-            <div className="flex-1 flex flex-col items-center pt-8 px-6 overflow-hidden text-center">
+            <div className="flex-1 flex flex-col items-center pt-4 px-6 overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
@@ -102,7 +102,8 @@ export default function Home() {
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[70vh] object-contain pointer-events-none" alt="Cover" />
+                    /* 💡 画像自体の最大高さを少し抑えて、ボタンが被る物理的な隙間を確保したわ */
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[62vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
                     <div className="text-center w-full pt-28">
                       <h2 className="text-4xl font-bold mb-10 leading-tight px-2">{WORDS[index].mainEn}</h2>
@@ -114,9 +115,10 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            <div className="w-full flex flex-col items-center bg-white border-t border-gray-50 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+            {/* 💡 ボタンエリアを画面下部に完全に固定するコンテナよ */}
+            <div className="w-full flex flex-col items-center bg-white">
               
-              <div className="w-full flex flex-col items-center py-6 min-h-[160px] justify-center">
+              <div className="w-full flex flex-col items-center py-4 min-h-[140px] relative">
                 {!user ? (
                   <div className="w-full max-w-[280px] px-6">
                     <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
@@ -124,22 +126,22 @@ export default function Home() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-full max-w-[340px] flex flex-col items-center h-full">
+                  <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
-                      /* 💡 ここを mt-12 と justify-end で強制的に下げたわ */
-                      <div className="flex flex-col items-center mt-12 pb-2">
+                      /* 💡 ここが Welcome & OPEN のセット。極限まで下げたわ */
+                      <div className="flex flex-col items-center">
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </div>
                     ) : (
-                      <>
-                        <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-6">Day {index}</span>
+                      <div className="pt-2">
+                        <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] block text-center mb-4">Day {index}</span>
                         <div className="flex items-center justify-between w-full px-8">
                           <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4">&lt;</button>
                           <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase">Top</button>
                           <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4">&gt;</button>
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
                 )}
