@@ -82,7 +82,7 @@ export default function Home() {
     <div className="fixed inset-0 bg-white text-black flex flex-col overflow-hidden">
       <AnimatePresence>
         {isLoading ? (
-          /* 💡 Loadingロゴの位置を少し上に上げたわ（pt-32を追加） */
+          /* 💡 ここを pt-32 に戻したわ。ロゴが少し上に来るわよ */
           <motion.div key="loader" className="fixed inset-0 flex flex-col items-center pt-32 bg-white z-[200]" exit={{ opacity: 0 }}>
             <img src="/Loading.png" alt="Loading" className="w-64" />
           </motion.div>
@@ -127,8 +127,8 @@ export default function Home() {
                 ) : (
                   <div className="w-full max-w-[340px] flex flex-col items-center">
                     {index === 0 ? (
-                      /* 💡 WelcomeとOPENのセットを少し下げたわ（pb-4を追加） */
-                      <div className="flex flex-col items-center pb-4">
+                      /* 💡 ここを pt-10 にして、セットを押し下げたままにしたわ */
+                      <div className="flex flex-col items-center pt-10">
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
                         <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
                       </div>
