@@ -86,10 +86,10 @@ export default function Home() {
             <img src="/Loading.png" alt="Loading" className="w-64" />
           </motion.div>
         ) : (
-          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative h-full w-full bg-white">
+          <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative flex flex-col h-full w-full bg-white">
             
-            {/* メイン画像・テキストエリア */}
-            <div className="absolute inset-0 flex flex-col items-center pt-8 px-6">
+            {/* 1. コンテンツ（画像・テキスト）エリア */}
+            <div className="flex-1 flex flex-col items-center pt-8 px-6 overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={index}
@@ -103,11 +103,11 @@ export default function Home() {
                   transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
                 >
                   {index === 0 ? (
-                    <img src={WORDS[0].image} className="w-full h-auto max-h-[75vh] object-contain pointer-events-none" alt="Cover" />
+                    <img src={WORDS[0].image} className="w-full h-auto max-h-[70vh] object-contain pointer-events-none" alt="Cover" />
                   ) : (
-                    <div className="text-center w-full pt-20">
-                      <h2 className="text-4xl font-bold mb-10 leading-tight">{WORDS[index].mainEn}</h2>
-                      <p className="text-lg text-gray-500 mb-14">{WORDS[index].subJp}</p>
+                    <div className="text-center w-full pt-16">
+                      <h2 className="text-4xl font-bold mb-10 leading-tight px-2">{WORDS[index].mainEn}</h2>
+                      <p className="text-lg text-gray-500 mb-14 px-4">{WORDS[index].subJp}</p>
                       <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity }} className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">Tap for Note</motion.p>
                     </div>
                   )}
@@ -115,41 +115,47 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            {/* 固定ナビゲーションエリア（画面下部に常に表示） */}
-            <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center z-50 bg-gradient-to-t from-white via-white/90 to-transparent pt-10">
-              {!user ? (
-                <div className="w-full max-w-[280px] pb-12 px-6">
-                  <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
-                    {isPiReady ? "Pi Network Login" : "Loading..."}
-                  </button>
-                </div>
-              ) : (
-                <div className="w-full max-w-[340px] flex flex-col items-center pb-8">
-                  {index === 0 ? (
-                    <>
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-6 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
-                      <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-8">Day {index}</span>
-                      <div className="flex items-center justify-between w-full px-8">
-                        <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4">&lt;</button>
-                        <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase">Top</button>
-                        <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4">&gt;</button>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
+            {/* 2. 下部固定ナビ・フッター・広告エリア */}
+            <div className="w-full flex flex-col items-center bg-white border-t border-gray-50 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+              
+              {/* 操作系 */}
+              <div className="w-full flex flex-col items-center py-6">
+                {!user ? (
+                  <div className="w-full max-w-[280px] px-6">
+                    <button onClick={handleLogin} disabled={!isPiReady} className="w-full py-4 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg active:scale-95 transition-transform">
+                      {isPiReady ? "Pi Network Login" : "Loading..."}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-full max-w-[340px] flex flex-col items-center">
+                    {index === 0 ? (
+                      <>
+                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-6 uppercase tracking-wider">Welcome, {user.username}!</motion.p>
+                        <button onClick={nextCard} className="px-16 py-4 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform">OPEN</button>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-sm font-semibold text-gray-400 uppercase tracking-[0.3em] mb-6">Day {index}</span>
+                        <div className="flex items-center justify-between w-full px-8">
+                          <button onClick={prevCard} className="text-4xl text-gray-300 hover:text-black p-4">&lt;</button>
+                          <button onClick={goToTop} className="text-[10px] font-bold text-gray-400 border border-gray-200 px-10 py-3 rounded-full uppercase">Top</button>
+                          <button onClick={nextCard} className="text-4xl text-gray-300 hover:text-black p-4">&gt;</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
 
-              {/* フッター情報 */}
-              <footer className="w-full text-center py-2 bg-white">
-                <p className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">kotobabito</p>
-                <div className="h-8 flex items-center justify-center opacity-30">
-                  <p className="text-[8px] uppercase font-bold">Ad Space</p>
-                </div>
+              {/* フッター（元の高さ py-4） */}
+              <footer className="w-full text-center py-4 border-t border-gray-100">
+                <p className="text-sm text-gray-600 tracking-widest uppercase font-bold">kotobabito</p>
               </footer>
+
+              {/* 広告（元の高さ h-16） */}
+              <div className="w-full h-16 flex items-center justify-center bg-gray-50">
+                <p className="text-[10px] text-gray-300 tracking-widest uppercase font-bold">Ad Space</p>
+              </div>
             </div>
 
             {/* Note表示 */}
