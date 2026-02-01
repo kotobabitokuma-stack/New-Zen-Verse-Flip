@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- WORDSデータは必ず31番まで含めてね ---
+// --- WORDSデータ（必ず31番まで含めてください） ---
 const WORDS = [
   { id: 0, isCover: true, image: "/coverV0.png" },
   { id: 1, mainEn: "All encounters and events exist to lead you to happiness.", subJp: "すべての出逢いも出来事も 幸せのためにやってくる", noteEn: "Every experience—hardships, joys, and challenges—is a seed of happiness. Believe that everything you face today is paving the path to a brighter future.", noteJp: "苦しいことも嬉しいことも、すべては幸せの素。今の経験が必ず未来の幸せに繋がると、自分を信じてあげてください。" },
-  // ... (id: 2 〜 31 までのデータ)
+  // ... (id: 2 〜 31 までのデータをここに保持)
 ];
 
 export default function Home() {
@@ -43,7 +43,6 @@ export default function Home() {
     } catch (err) { alert("Error: " + err.message); }
   };
 
-  // 確実に次のインデックスへ進むように修正
   const nextCard = () => { 
     setIndex((prev) => (prev + 1) % WORDS.length); 
     setShowNote(false); 
@@ -54,9 +53,8 @@ export default function Home() {
   };
 
   const handleDragEnd = (event, info) => {
-    // スワイプの感度を少し調整（50px移動で発動）
-    if (info.offset.x < -50) nextCard();
-    else if (info.offset.x > 50) prevCard();
+    if (info.offset.x < -30) nextCard(); // 感度を少し上げました
+    else if (info.offset.x > 30) prevCard();
   };
 
   return (
@@ -70,16 +68,18 @@ export default function Home() {
           <motion.main key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center bg-white">
             
             <div className="flex-1 w-full max-w-sm flex items-center justify-center px-6 relative overflow-hidden">
-              <AnimatePresence mode="wait">
+              {/* modeをpopLayoutに変更してスワイプの追従性を向上 */}
+              <AnimatePresence mode="popLayout">
                 <motion.div
                   key={index}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   onDragEnd={handleDragEnd}
                   onClick={() => user && index !== 0 && setShowNote(true)}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   className="w-full h-full flex flex-col items-center justify-center cursor-pointer"
                 >
                   {index === 0 ? (
@@ -97,7 +97,7 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* 💡 解説オーバーレイ（背景を少し薄く 50% に変更） */}
+              {/* 解説オーバーレイ */}
               <AnimatePresence>
                 {showNote && (
                   <motion.div
@@ -107,14 +107,10 @@ export default function Home() {
                     onClick={() => setShowNote(false)}
                     className="absolute inset-0 z-50 bg-black/50 flex flex-col items-center justify-center p-8 backdrop-blur-[2px]"
                   >
-                    <motion.div 
-                      initial={{ y: 20 }}
-                      animate={{ y: 0 }}
-                      className="text-center text-white"
-                    >
+                    <motion.div initial={{ y: 10 }} animate={{ y: 0 }} className="text-center text-white">
                       <h3 className="text-xl font-bold mb-6 leading-relaxed">{WORDS[index].noteEn}</h3>
                       <p className="text-sm leading-loose opacity-90">{WORDS[index].noteJp}</p>
-                      <p className="mt-12 text-[10px] opacity-60 tracking-widest uppercase font-bold">Tap to close</p>
+                      <p className="mt-12 text-[10px] opacity-60 tracking-widest uppercase font-bold text-white">Tap to close</p>
                     </motion.div>
                   </motion.div>
                 )}
@@ -128,18 +124,18 @@ export default function Home() {
                   disabled={!isPiReady}
                   className="w-full py-3 bg-[#8A2BE2] text-white rounded-full font-bold shadow-lg"
                 >
-                  {isPiReady ? "Piでログインして始める" : "読み込み中..."}
+                  {isPiReady ? "Pi Network Login" : "Loading..."}
                 </button>
               ) : (
-                <div className="flex flex-col items-center space-y-4">
+                <div className="flex flex-col items-center">
                   {index === 0 && (
                     <>
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-2 italic">
-                        Welcome, {user.username}-kun!
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold text-gray-700 mb-4">
+                        Welcome, {user.username}!
                       </motion.p>
                       <button
                         onClick={nextCard}
-                        className="px-10 py-2.5 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
+                        className="px-12 py-3 bg-black text-white rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform"
                       >
                         OPEN
                       </button>
